@@ -122,7 +122,7 @@ if show_dashboard:
 else:
     # --- DEFAULT MAIN VIEW: THE USER ACCESSIBLE CALCULATOR ---
     st.title("🩺 Adult Health Metrics Calculator")
-    st.write("Calculate your metrics. Your submission helps gather anonymous community health trends!")
+    st.write("Calculate your metrics, and see how you are doing!")
 
     # Data Entry Form
     with st.form(key="health_form"):
