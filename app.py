@@ -15,7 +15,7 @@ ADMIN_PASSWORD = "admin"
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
 # Change the web link inside the quotes below if you want a different picture!
-BACKGROUND_IMAGE_URL = "https://media.istockphoto.com/id/2202294534/photo/doctors-touch-virtual-patient-medical-reports-to-diagnose-diseases-and-plan-treatment-more.webp?a=1&b=1&s=612x612&w=0&k=20&c=lXj1vpmEeMvqTEag2KrQ-GyFwkMuCnC7j9L16iEVWoQ="
+BACKGROUND_IMAGE_URL = "https://images.unsplash.com/photo-1557683316-973673baf926?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y29sb3IlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww"
 
 st.markdown(f"""
     <style>
