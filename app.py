@@ -15,7 +15,7 @@ ADMIN_PASSWORD = "admin"
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
 # Change the web link inside the quotes below if you want a different picture!
-BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1769789060524-62f83469c231?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTd8fGRpZ2l0YWwlMjBoZWFsdGglMjB0cmFuc3BhcmFudHxlbnwwfHwwfHx8MA%3D%3D"
+BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J8ZW58MHx8MHx8fDA%3D"
 
 st.markdown(f"""
     <style>
