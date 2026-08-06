@@ -14,7 +14,7 @@ ADMIN_PASSWORD = "edisader"
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
-BACKGROUND_IMAGE_URL = "https://unsplash.com"
+BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J8ZW58MHx8MHx8fDA%3D"
 
 st.markdown(f"""
     <style>
