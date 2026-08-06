@@ -11,24 +11,50 @@ st.set_page_config(page_title="Health Metrics Calculator", page_icon="⚖️", l
 # ==========================================
 ADMIN_PASSWORD = "admin" 
 
-# Custom CSS for UI cards
-st.markdown("""
+# ==========================================
+# 🎨 BACKGROUND IMAGE & GLASS UI STYLING
+# ==========================================
+# Change the web link inside the quotes below if you want a different picture!
+BACKGROUND_IMAGE_URL = "https://unsplash.com"
+
+st.markdown(f"""
     <style>
-    .metric-card {
+    /* Full screen background image */
+    .stApp {{
+        background-image: url("{BACKGROUND_IMAGE_URL}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    
+    /* Frosted glass white backing for form blocks and titles */
+    [data-testid="stForm"], .stMarkdown, .stMetric, [data-testid="stExpander"] {{
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+    }}
+    
+    /* Clear custom colors for results cards */
+    .metric-card {{
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 10px;
         color: white;
         text-align: center;
         font-weight: bold;
-    }
-    .status-low { background-color: #2e7d32; }      /* Green */
-    .status-med { background-color: #f9a825; }      /* Orange/Yellow */
-    .status-high { background-color: #c62828; }     /* Red */
-    .status-info { background-color: #1565c0; }     /* Blue */
+    }}
+    .status-low {{ background-color: #2e7d32; }}      /* Green */
+    .status-med {{ background-color: #f9a825; }}      /* Orange/Yellow */
+    .status-high {{ background-color: #c62828; }}     /* Red */
+    .status-info {{ background-color: #1565c0; }}     /* Blue */
     </style>
     """, unsafe_allow_html=True)
 
+# ==========================================
+# 📐 MEDICAL FORMULA FUNCTIONS
+# ==========================================
 def calculate_bmi(weight, height_cm):
     height_m = height_cm / 100
     return weight / (height_m ** 2)
@@ -102,17 +128,13 @@ if show_dashboard:
             
             with tab1:
                 if "BMI_Status" in df.columns:
-                    # Count values and convert to a clean table for chart presentation
                     bmi_counts = df["BMI_Status"].value_counts().reset_index()
                     bmi_counts.columns = ["Category", "Count"]
-                    
-                    # Display a Streamlit native bar chart
                     st.bar_chart(data=bmi_counts, x="Category", y="Count", color="#1565c0")
                 else:
                     st.warning("Historical data columns mismatch. Try running a clean submission.")
                     
             with tab2:
-                # Let admin view raw data records inside the app interface
                 st.dataframe(df.sort_values(by="Timestamp", ascending=False), use_container_width=True)
                 
     except Exception as e:
