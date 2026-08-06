@@ -14,7 +14,7 @@ ADMIN_PASSWORD = "edisader"
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
-BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J|ZW58MHx8MHx8fDA%3D"
+BACKGROUND_IMAGE_URL = "https://unsplash.com"
 
 st.markdown(f"""
     <style>
@@ -48,6 +48,24 @@ st.markdown(f"""
     .status-med {{ background-color: #f9a825; }}      /* Orange/Yellow */
     .status-high {{ background-color: #c62828; }}     /* Red */
     .status-info {{ background-color: #1565c0; }}     /* Blue */
+
+    /* 🛡️ PERMANENT GLOBAL BLANKET BLOCKER FOR GITHUB HOOKS 🛡️ */
+    /* This completely deletes the parent header container layout from displaying anything */
+    header, [data-testid="stHeader"] {{
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }}
+    
+    /* Extra aggressive fallbacks to catch fork links, logos, and raw HTML wrappers */
+    iframe[title="streamlitApp"], .viewerBadge_container__176oo, .styles_viewerBadge__1yB5_, 
+    .viewerBadge_link__1S137, [data-testid="stGitHubIcon"], a[href*="github.com"], 
+    .stDeployButton, Button[title="View source code on GitHub"] {{
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -150,7 +168,6 @@ else:
         col1, col2 = st.columns(2)
         
         with col1:
-            # Setting value=None forces the fields to load completely blank
             age = st.number_input("Age", min_value=1, max_value=120, value=None, placeholder="Type your age...")
             sex = st.selectbox("Biological Sex", ["Male", "Female"])
             height = st.number_input("Height (cm)", min_value=50, max_value=250, value=None, placeholder="e.g. 170")
@@ -163,7 +180,6 @@ else:
 
     # Execute calculations and upload when user clicks submit
     if submit_button:
-        # Stop calculation and show an error box if any field is empty
         if age is None or height is None or weight is None or waist is None:
             st.error("⚠️ Please fill in all the empty fields before submitting your metrics.")
         elif age < 20:
