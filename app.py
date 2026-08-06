@@ -50,17 +50,18 @@ st.markdown(f"""
     .status-info {{ background-color: #1565c0; }}     /* Blue */
 
     /* 🛡️ PERMANENT GLOBAL BLANKET BLOCKER FOR GITHUB HOOKS 🛡️ */
-    /* This completely deletes the parent header container layout from displaying anything */
     header, [data-testid="stHeader"] {{
         display: none !important;
         visibility: hidden !important;
         height: 0px !important;
     }}
     
-    /* Extra aggressive fallbacks to catch fork links, logos, and raw HTML wrappers */
+    /* Extra aggressive fallbacks to catch fork links, logos, and floating containers */
     iframe[title="streamlitApp"], .viewerBadge_container__176oo, .styles_viewerBadge__1yB5_, 
     .viewerBadge_link__1S137, [data-testid="stGitHubIcon"], a[href*="github.com"], 
-    .stDeployButton, Button[title="View source code on GitHub"] {{
+    .stDeployButton, Button[title="View source code on GitHub"],
+    div[class*="Profile"], div[class*="Badge"], [data-testid="stConnectionStatus"],
+    .styles_floatingContainer__2wK_A, div[class*="floatingContainer"], footer, .stActionButton {{
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -226,6 +227,6 @@ else:
                 existing_df = conn.read(ttl=0)
                 updated_df = pd.concat([existing_df, new_row], ignore_index=True)
                 conn.update(data=updated_df)
-                st.caption("✅ Data log recorded anonymously.")
+                st.success("✅ Data log recorded anonymously.")
             except Exception as e:
                 st.caption("⚠️ Data logging fallback. Calculations generated successfully.")
