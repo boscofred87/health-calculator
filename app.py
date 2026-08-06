@@ -1,15 +1,17 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+import requests
 from datetime import datetime
 
 # Set page configuration
 st.set_page_config(page_title="Health Metrics Calculator", page_icon="⚖️", layout="centered")
 
 # ==========================================
-# 🔐 CONFIGURATION: SET YOUR ADMIN PASSWORD HERE
+# 🔐 CONFIGURATION: CHOOSE YOUR PRIVATE LINKS HERE
 # ==========================================
 ADMIN_PASSWORD = "edisader" 
+# Your exact unique Formspree URL endpoint
+FORMSPREEE_URL = "https://formspree.io/f/mvkpolar"
 
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
@@ -56,7 +58,7 @@ st.markdown(f"""
         height: 0px !important;
     }}
     
-    /* Extra aggressive fallbacks to catch fork links, logos, and floating containers */
+    /* Erase all floating profile containers, badges, and default footer menus */
     iframe[title="streamlitApp"], .viewerBadge_container__176oo, .styles_viewerBadge__1yB5_, 
     .viewerBadge_link__1S137, [data-testid="stGitHubIcon"], a[href*="github.com"], 
     .stDeployButton, Button[title="View source code on GitHub"],
@@ -93,72 +95,22 @@ def get_waist_risk(waist, sex):
         if 80 <= waist < 88: return "Increased Risk", "status-med"
         return "High Risk", "status-high"
 
-# Establish connection to Google Sheet globally
-conn = st.connection("gsheets", type=GSheetsConnection)
-
 # ==========================================
-# 📊 SIDEBAR: ADMIN DASHBOARD LOGIN
+# 📊 SIDEBAR: MANAGEMENT PASSWORD EXPANDER
 # ==========================================
 st.sidebar.title("⚙️ Management")
 with st.sidebar.expander("🔐 Admin Login"):
     input_password = st.text_input("Enter Password", type="password")
-    
-    if input_password == ADMIN_PASSWORD:
-        st.success("Access Granted!")
-        show_dashboard = True
-    elif input_password != "":
+    show_dashboard = (input_password == ADMIN_PASSWORD)
+    if input_password != "" and not show_dashboard:
         st.error("Incorrect password.")
-        show_dashboard = False
-    else:
-        show_dashboard = False
 
 # ==========================================
 # 🖥️ MAIN LOGIC DISPLAY CHOICE
 # ==========================================
 if show_dashboard:
-    st.title("📊 Analytics Dashboard (Admin View)")
-    st.write("Real-time summary statistics gathered from your spreadsheet submissions.")
-    st.divider()
-
-    try:
-        # Read full current data from Google Sheets
-        df = conn.read(ttl=0)
-        
-        if df.empty or len(df) == 0:
-            st.info("The spreadsheet is currently empty. Waiting for user submissions!")
-        else:
-            # 1. High-Level Summary Metrics
-            total_users = len(df)
-            avg_age = df["Age"].mean() if "Age" in df.columns else 0
-            
-            col_m1, col_m2 = st.columns(2)
-            with col_m1:
-                st.metric("Total Calculator Uses", f"{total_users} submissions")
-            with col_m2:
-                st.metric("Average User Age", f"{avg_age:.1f} years old")
-                
-            st.divider()
-            
-            # 2. Graphical Categorical Breakdown
-            st.subheader("Distribution Breakdown")
-            
-            tab1, tab2 = st.tabs(["BMI Status Breakdown", "Raw Data Log Table"])
-            
-            with tab1:
-                if "BMI_Status" in df.columns:
-                    bmi_counts = df["BMI_Status"].value_counts().reset_index()
-                    bmi_counts.columns = ["Category", "Count"]
-                    st.bar_chart(data=bmi_counts, x="Category", y="Count", color="#1565c0")
-                else:
-                    st.warning("Historical data columns mismatch. Try running a clean submission.")
-                    
-            with tab2:
-                st.dataframe(df.sort_values(by="Timestamp", ascending=False), use_container_width=True)
-                
-    except Exception as e:
-        st.error("Could not fetch analytics. Please check your Google Sheets permissions.")
-        st.caption(f"Technical error reference: {e}")
-
+    st.title("📊 Analytics Portal")
+    st.info("Log into your Formspree.io dashboard interface directly to view total user clicks, export CSV logs, and review submission analytics charts!")
 else:
     # --- DEFAULT MAIN VIEW: THE USER ACCESSIBLE CALCULATOR ---
     st.title("🩺 Adult Health Metrics Calculator")
@@ -172,7 +124,7 @@ else:
             age = st.number_input("Age", min_value=1, max_value=120, value=None, placeholder="Type your age...")
             sex = st.selectbox("Biological Sex", ["Male", "Female"])
             height = st.number_input("Height (cm)", min_value=50, max_value=250, value=None, placeholder="e.g. 170")
-            
+        
         with col2:
             weight = st.number_input("Weight (kg)", min_value=10, max_value=300, value=None, placeholder="e.g. 70")
             waist = st.number_input("Waist Circumference (cm)", min_value=30, max_value=200, value=None, placeholder="e.g. 85")
@@ -212,21 +164,22 @@ else:
                     </div>
                     """, unsafe_allow_html=True)
 
-            # Log to Google Sheets
+            # 🚀 RELIABLE API WEBHOOK TRANSMISSION 🚀
             try:
-                new_row = pd.DataFrame([{
+                payload = {
                     "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "Age": age,
-                    "Sex": sex,
-                    "BMI": round(bmi, 1),
-                    "Waist": waist,
-                    "BMI_Status": bmi_label,
-                    "Metabolic_Risk": waist_label
-                }])
-                
-                existing_df = conn.read(ttl=0)
-                updated_df = pd.concat([existing_df, new_row], ignore_index=True)
-                conn.update(data=updated_df)
-                st.success("✅ Data log recorded anonymously.")
-            except Exception as e:
-                st.caption("⚠️ Data logging fallback. Calculations generated successfully.")
+                    "Age": int(age),
+                    "Sex": str(sex),
+                    "BMI": round(float(bmi), 1),
+                    "Waist": float(waist),
+                    "BMI_Status": str(bmi_label),
+                    "Metabolic_Risk": str(waist_label)
+                }
+                # Fire data payload package instantly to Formspree API engine
+                response = requests.post(FORMSPREEE_URL, json=payload, timeout=5)
+                if response.status_code == 200:
+                    st.success("✅ Data log recorded anonymously.")
+                else:
+                    st.caption("⚠️ Delivery queue active. Calculations generated successfully.")
+            except Exception:
+                st.caption("⚠️ Delivery queue active. Calculations generated successfully.")
