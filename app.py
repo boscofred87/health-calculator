@@ -9,12 +9,12 @@ st.set_page_config(page_title="Health Metrics Calculator", page_icon="⚖️", l
 # ==========================================
 # 🔐 CONFIGURATION: SET YOUR ADMIN PASSWORD HERE
 # ==========================================
-ADMIN_PASSWORD = "admin" 
+ADMIN_PASSWORD = "edisader" 
 
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
-BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J8ZW58MHx8MHx8fDA%3D"
+BACKGROUND_IMAGE_URL = "https://unsplash.com"
 
 st.markdown(f"""
     <style>
@@ -48,24 +48,7 @@ st.markdown(f"""
     .status-med {{ background-color: #f9a825; }}      /* Orange/Yellow */
     .status-high {{ background-color: #c62828; }}     /* Red */
     .status-info {{ background-color: #1565c0; }}     /* Blue */
-
-    /* Custom Signature Footer */
-    .custom-footer {{
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: rgba(255, 255, 255, 0.7);
-        color: #2e7d32;
-        text-align: center;
-        padding: 8px 0;
-        font-weight: bold;
-        font-size: 0.95rem;
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-        z-index: 999;
-    }}
     </style>
-    <div class="custom-footer">Created by: F.Bosco</div>
     """, unsafe_allow_html=True)
 
 # ==========================================
