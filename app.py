@@ -16,7 +16,7 @@ FORMSPREEE_URL = "https://formspree.io/f/mvkpolar"
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
-BACKGROUND_IMAGE_URL = "https://unsplash.com"
+BACKGROUND_IMAGE_URL = "https://media.istockphoto.com/id/2234378499/photo/green-and-white-gradient-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=fbgkrgUBELw9Jim3V1uF-nSQ823y5A6vBdIFNUr4pyU="
 
 st.markdown(f"""
     <style>
