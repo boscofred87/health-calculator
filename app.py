@@ -14,7 +14,7 @@ ADMIN_PASSWORD = "edisader"
 # ==========================================
 # 🎨 BACKGROUND IMAGE & GLASS UI STYLING
 # ==========================================
-BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J8ZW58MHx8MHx8fDA%3D"
+BACKGROUND_IMAGE_URL = "https://plus.unsplash.com/premium_photo-1701795330835-a6f8485533ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Z3JlZW4lMjB3aGl0ZSUyMHBsYWluJTIwY29sb3J|ZW58MHx8MHx8fDA%3D"
 
 st.markdown(f"""
     <style>
@@ -150,19 +150,23 @@ else:
         col1, col2 = st.columns(2)
         
         with col1:
-            age = st.number_input("Age", min_value=1, max_value=120, value=0)
+            # Setting value=None forces the fields to load completely blank
+            age = st.number_input("Age", min_value=1, max_value=120, value=None, placeholder="Type your age...")
             sex = st.selectbox("Biological Sex", ["Male", "Female"])
-            height = st.number_input("Height (cm)", min_value=50, max_value=250, value=0)
+            height = st.number_input("Height (cm)", min_value=50, max_value=250, value=None, placeholder="e.g. 170")
             
         with col2:
-            weight = st.number_input("Weight (kg)", min_value=10, max_value=300, value=0)
-            waist = st.number_input("Waist Circumference (cm)", min_value=30, max_value=200, value=)
+            weight = st.number_input("Weight (kg)", min_value=10, max_value=300, value=None, placeholder="e.g. 70")
+            waist = st.number_input("Waist Circumference (cm)", min_value=30, max_value=200, value=None, placeholder="e.g. 85")
             
         submit_button = st.form_submit_button(label="Submit Results")
 
     # Execute calculations and upload when user clicks submit
     if submit_button:
-        if age < 20:
+        # Stop calculation and show an error box if any field is empty
+        if age is None or height is None or weight is None or waist is None:
+            st.error("⚠️ Please fill in all the empty fields before submitting your metrics.")
+        elif age < 20:
             st.warning("⚠️ Adult BMI categories do not apply to individuals under 20. Your data was not logged.")
         else:
             st.divider()
